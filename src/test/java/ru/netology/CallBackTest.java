@@ -1,5 +1,9 @@
 package ru.netology;
 
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
@@ -13,6 +17,11 @@ import static ru.netology.DataGenerator.*;
 
 
 public class CallBackTest {
+
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
 
     @Test
     void shouldSubmitRequest() {
@@ -52,5 +61,9 @@ public class CallBackTest {
 //        Проверка даты в сплывающем сообщении
         $("[data-test-id='success-notification'] .notification__content").shouldHave(text("Встреча успешно запланирована на " + replanMeetingDate));
     }
+
+    @AfterAll
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure"); }
 
 }
